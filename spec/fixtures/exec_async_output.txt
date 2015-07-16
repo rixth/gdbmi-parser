@@ -1,0 +1,1 @@
+123*stopped,frame={addr="0x000000e8",func="main",args=[],file="test.c",fullname="/path/to/file.c",line="16"},thread-id="1",stopped-threads="all"

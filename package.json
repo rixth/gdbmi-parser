@@ -1,0 +1,27 @@
+{
+  "name": "gdbmi-parser",
+  "version": "1.0.0",
+  "description": "Parses the machine-reabable output from GDB/MI in to JS objects",
+  "main": "src/gdbmi.js",
+  "bin": {
+    "gdbmi-parser": "./bin/gdbmi-parser"
+  },
+  "scripts": {
+    "test": "./node_modules/jasmine/bin/jasmine.js"
+  },
+  "keywords": [
+    "gdb",
+    "gdbmi",
+    "debugging",
+    "debug"
+  ],
+  "author": "Thomas Rix <thomas@trix.io>",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.3.1",
+    "pegjs": "^0.8.0"
+  },
+  "dependencies": {
+    "yargs": "^3.15.0"
+  }
+}

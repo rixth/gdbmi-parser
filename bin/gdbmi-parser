@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+var argv = require('yargs').argv,
+    fs = require('fs'),
+    parsers = require('../src/gdbmi.js');
+
+function parseAndOutput (content) {
+  var parsed;
+
+  if (argv.mode && argv.mode === 'output') {
+    parsed = parsers.parseOutput(content);
+  } else {
+    parsed = content.trim().split('\n').map(function (line) {
+      if (line) {
+        line = line.trim() + '\n';
+        return parsers.parseLine(line);
+      } else {
+        return null;
+      }
+    });
+  }
+
+  process.stdout.write(JSON.stringify(parsed, null, 2));
+  process.stdout.write('\n');
+}
+
+if (argv._.length) {
+  argv._.forEach(function (path) {
+    parseAndOutput(fs.readFileSync(path, 'utf-8'));
+  });
+} else if (!process.stdin.isTTY) {
+  var chunks = [];
+
+  process.stdin.resume();
+  process.stdin.setEncoding('utf8');
+
+  process.stdin.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  process.stdin.on('end', function () {
+    parseAndOutput(chunks.join());
+  });
+} else {
+  console.log('Usage:');
+  console.log('  gdbmi-parser [--mode] path/to/file.txt');
+  console.log('  cat path/to/file.txt | gdbmi-parser [--mode]');
+  console.log('  gdbmi-parser [--mode] < path/to/file.txt');
+  console.log('  ');
+  console.log('  Mode is either \'lines\' (default) or \'output\' (default).');
+  console.log('  See README.md for more details.');
+}
