@@ -1,7 +1,14 @@
 {
   function variablePairsToMap (pairs) {
     return pairs.reduce(function (memo, pair) {
-      memo[pair.name] = pair.value;
+      if (memo[pair.name]) {
+        if (!Array.isArray(memo[pair.name])) {
+          memo[pair.name] = [memo[pair.name]];
+        }
+        memo[pair.name].push(pair.value);
+      } else {
+        memo[pair.name] = pair.value;
+      }
       return memo;
     }, {});
   }
